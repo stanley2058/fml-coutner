@@ -90,7 +90,7 @@ export default function Home() {
               value={username}
               onChange={handleUsernameChange}
               placeholder="Enter your username"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
             />
           </div>
 
@@ -99,29 +99,29 @@ export default function Home() {
             <p className="text-gray-600 mb-6">Current FML count</p>
           </div>
 
-          <div className="space-y-3">
+          <div className="flex gap-3">
             <button
               onClick={() => incrementCounter(1)}
               disabled={loading}
-              className="w-full bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
+              className="flex-1 bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
             >
-              {loading ? 'Updating...' : '+1 (Mildly annoyed)'}
+              +1
             </button>
             
             <button
               onClick={() => incrementCounter(5)}
               disabled={loading}
-              className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
+              className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
             >
-              {loading ? 'Updating...' : '+5 (Pretty frustrated)'}
+              +5
             </button>
             
             <button
               onClick={() => incrementCounter(10)}
               disabled={loading}
-              className="w-full bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
+              className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
             >
-              {loading ? 'Updating...' : '+10 (Life is terrible)'}
+              +10
             </button>
           </div>
         </div>
