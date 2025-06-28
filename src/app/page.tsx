@@ -2,10 +2,17 @@
 
 import { useState, useEffect } from 'react';
 
+interface LogEntry {
+  timestamp: string;
+  amount: number;
+  newTotal: number;
+}
+
 export default function Home() {
   const [username, setUsername] = useState('');
   const [counter, setCounter] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [log, setLog] = useState<LogEntry[]>([]);
 
   useEffect(() => {
     const savedUsername = localStorage.getItem('fml-username');
@@ -21,6 +28,7 @@ export default function Home() {
       const data = await response.json();
       if (response.ok) {
         setCounter(data.count);
+        setLog(data.log || []);
       }
     } catch (error) {
       console.error('Error fetching counter:', error);
@@ -60,6 +68,8 @@ export default function Home() {
       const data = await response.json();
       if (response.ok) {
         setCounter(data.count);
+        // Refresh the log after incrementing
+        fetchCounter(username.trim());
       } else {
         alert('Error updating counter: ' + data.error);
       }
@@ -103,7 +113,7 @@ export default function Home() {
             <button
               onClick={() => incrementCounter(1)}
               disabled={loading}
-              className="flex-1 bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
+              className="flex-1 bg-yellow-500 hover:bg-yellow-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors cursor-pointer disabled:cursor-not-allowed"
             >
               +1
             </button>
@@ -111,7 +121,7 @@ export default function Home() {
             <button
               onClick={() => incrementCounter(5)}
               disabled={loading}
-              className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
+              className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors cursor-pointer disabled:cursor-not-allowed"
             >
               +5
             </button>
@@ -119,11 +129,38 @@ export default function Home() {
             <button
               onClick={() => incrementCounter(10)}
               disabled={loading}
-              className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors"
+              className="flex-1 bg-red-500 hover:bg-red-600 disabled:bg-gray-400 text-white font-semibold py-3 px-4 rounded-md transition-colors cursor-pointer disabled:cursor-not-allowed"
             >
               +10
             </button>
           </div>
+
+          {log.length > 0 && (
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
+              <div className="space-y-2 max-h-48 overflow-y-auto">
+                {log.map((entry, index) => (
+                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-md text-sm">
+                    <div className="flex items-center gap-3">
+                      <span className={`font-semibold ${
+                        entry.amount === 1 ? 'text-yellow-600' :
+                        entry.amount === 5 ? 'text-orange-600' :
+                        'text-red-600'
+                      }`}>
+                        +{entry.amount}
+                      </span>
+                      <span className="text-gray-600">
+                        {new Date(entry.timestamp).toLocaleString()}
+                      </span>
+                    </div>
+                    <span className="text-gray-800 font-medium">
+                      Total: {entry.newTotal}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

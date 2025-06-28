@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCounter, incrementCounter } from '@/lib/redis';
+import { getCounter, incrementCounter, getLog } from '@/lib/redis';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
@@ -11,7 +11,8 @@ export async function GET(request: NextRequest) {
 
   try {
     const count = await getCounter(username);
-    return NextResponse.json({ username, count });
+    const log = await getLog(username);
+    return NextResponse.json({ username, count, log });
   } catch (error) {
     console.error('Error getting counter:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
