@@ -24,7 +24,9 @@ export default function Home() {
 
   const fetchCounter = async (user: string) => {
     try {
-      const response = await fetch(`/api/counter?username=${encodeURIComponent(user)}`);
+      const response = await fetch(
+        `/api/counter?username=${encodeURIComponent(user)}`
+      );
       const data = await response.json();
       if (response.ok) {
         setCounter(data.count);
@@ -91,7 +93,10 @@ export default function Home() {
 
         <div className="space-y-6">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Username
             </label>
             <input
@@ -105,7 +110,9 @@ export default function Home() {
           </div>
 
           <div className="text-center">
-            <div className="text-6xl font-bold text-gray-800 mb-4">{counter}</div>
+            <div className="text-6xl font-bold text-gray-800 mb-4">
+              {counter}
+            </div>
             <p className="text-gray-600 mb-6">Current FML count</p>
           </div>
 
@@ -117,7 +124,7 @@ export default function Home() {
             >
               +1
             </button>
-            
+
             <button
               onClick={() => incrementCounter(5)}
               disabled={loading}
@@ -125,7 +132,7 @@ export default function Home() {
             >
               +5
             </button>
-            
+
             <button
               onClick={() => incrementCounter(10)}
               disabled={loading}
@@ -137,16 +144,25 @@ export default function Home() {
 
           {log.length > 0 && (
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                Recent Activity
+              </h3>
               <div className="space-y-2 max-h-48 overflow-y-auto">
                 {log.map((entry, index) => (
-                  <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-md text-sm">
+                  <div
+                    key={index}
+                    className="flex justify-between items-center p-3 bg-gray-50 rounded-md text-sm"
+                  >
                     <div className="flex items-center gap-3">
-                      <span className={`font-semibold ${
-                        entry.amount === 1 ? 'text-yellow-600' :
-                        entry.amount === 5 ? 'text-orange-600' :
-                        'text-red-600'
-                      }`}>
+                      <span
+                        className={`font-semibold ${
+                          entry.amount === 1
+                            ? 'text-yellow-600'
+                            : entry.amount === 5
+                              ? 'text-orange-600'
+                              : 'text-red-600'
+                        }`}
+                      >
                         +{entry.amount}
                       </span>
                       <span className="text-gray-600">

@@ -13,11 +13,13 @@ A web app to track how bad you're feeling with a persistent counter stored in Re
 ## Setup
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Start Redis server:
+
 ```bash
 # Using Docker
 docker run -d -p 6379:6379 redis:alpine
@@ -27,6 +29,7 @@ redis-server
 ```
 
 3. Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -36,6 +39,7 @@ npm run dev
 ## Environment Variables
 
 Create a `.env.local` file with:
+
 ```
 REDIS_URL=redis://localhost:6379
 ```
@@ -45,7 +49,7 @@ REDIS_URL=redis://localhost:6379
 1. Enter your username in the input field
 2. Click one of the three buttons based on how bad you're feeling:
    - +1 (Mildly annoyed)
-   - +5 (Pretty frustrated) 
+   - +5 (Pretty frustrated)
    - +10 (Life is terrible)
 3. Your counter will be saved and persist across sessions
 
