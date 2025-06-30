@@ -6,6 +6,7 @@ interface LogEntry {
   timestamp: string;
   amount: number;
   newTotal: number;
+  reason?: string;
 }
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
   const [counter, setCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   const [log, setLog] = useState<LogEntry[]>([]);
+  const [reason, setReason] = useState('');
 
   useEffect(() => {
     const savedUsername = localStorage.getItem('fml-username');
@@ -64,12 +66,14 @@ export default function Home() {
         body: JSON.stringify({
           username: username.trim(),
           amount,
+          reason: reason.trim() || undefined,
         }),
       });
 
       const data = await response.json();
       if (response.ok) {
         setCounter(data.count);
+        setReason(''); // Clear reason after successful increment
         // Refresh the log after incrementing
         fetchCounter(username.trim());
       } else {
@@ -142,6 +146,23 @@ export default function Home() {
             </button>
           </div>
 
+          <div>
+            <label
+              htmlFor="reason"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Reason (optional)
+            </label>
+            <input
+              type="text"
+              id="reason"
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              placeholder="Why are you feeling this way?"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 placeholder-gray-500"
+            />
+          </div>
+
           {log.length > 0 && (
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
@@ -151,27 +172,34 @@ export default function Home() {
                 {log.map((entry, index) => (
                   <div
                     key={index}
-                    className="flex justify-between items-center p-3 bg-gray-50 rounded-md text-sm"
+                    className="p-3 bg-gray-50 rounded-md text-sm"
                   >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className={`font-semibold ${
-                          entry.amount === 1
-                            ? 'text-yellow-600'
-                            : entry.amount === 5
-                              ? 'text-orange-600'
-                              : 'text-red-600'
-                        }`}
-                      >
-                        +{entry.amount}
-                      </span>
-                      <span className="text-gray-600">
-                        {new Date(entry.timestamp).toLocaleString()}
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center gap-3">
+                        <span
+                          className={`font-semibold ${
+                            entry.amount === 1
+                              ? 'text-yellow-600'
+                              : entry.amount === 5
+                                ? 'text-orange-600'
+                                : 'text-red-600'
+                          }`}
+                        >
+                          +{entry.amount}
+                        </span>
+                        <span className="text-gray-600">
+                          {new Date(entry.timestamp).toLocaleString()}
+                        </span>
+                      </div>
+                      <span className="text-gray-800 font-medium">
+                        Total: {entry.newTotal}
                       </span>
                     </div>
-                    <span className="text-gray-800 font-medium">
-                      Total: {entry.newTotal}
-                    </span>
+                    {entry.reason && (
+                      <div className="mt-1 text-gray-700 italic">
+                        {entry.reason}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

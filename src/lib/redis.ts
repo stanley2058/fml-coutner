@@ -24,7 +24,8 @@ export async function getCounter(username: string): Promise<number> {
 
 export async function incrementCounter(
   username: string,
-  amount: number
+  amount: number,
+  reason?: string
 ): Promise<number> {
   const redis = await getRedisClient();
   const newCount = await redis.incrBy(`fml:${username}`, amount);
@@ -34,6 +35,7 @@ export async function incrementCounter(
     timestamp: new Date().toISOString(),
     amount,
     newTotal: newCount,
+    ...(reason && { reason }),
   };
   await redis.lPush(`fml:${username}:log`, JSON.stringify(logEntry));
 
@@ -44,6 +46,7 @@ export interface LogEntry {
   timestamp: string;
   amount: number;
   newTotal: number;
+  reason?: string;
 }
 
 export async function getLog(username: string): Promise<LogEntry[]> {

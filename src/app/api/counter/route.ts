@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, amount } = await request.json();
+    const { username, amount, reason } = await request.json();
 
     if (!username || typeof amount !== 'number') {
       return NextResponse.json(
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newCount = await incrementCounter(username, amount);
+    const newCount = await incrementCounter(username, amount, reason);
     return NextResponse.json({ username, count: newCount });
   } catch (error) {
     console.error('Error incrementing counter:', error);
